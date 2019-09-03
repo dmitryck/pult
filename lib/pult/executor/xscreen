@@ -1,0 +1,101 @@
+#!/bin/bash
+
+function usage {
+    echo "$(basename $0) [[user@]server:[port]] <screen-name> command..." >&2
+    exit 1
+}
+
+[[ $# -ge 2 ]] || usage
+
+SERVER=
+SERVERPORT="-p 22"
+SERVERPAT='^(([a-z]+@)?([A-Za-z0-9.]+)):([0-9]+)?$'
+if [[ "$1" =~ $SERVERPAT ]]; then
+    SERVER="${BASH_REMATCH[1]}"
+    [[ -n "${BASH_REMATCH[4]}" ]] && SERVERPORT="-p ${BASH_REMATCH[4]}"
+    shift
+fi
+
+function xscreen {
+    # Usage: xscreen <screen-name> command...
+    local SCREEN_NAME=$1
+    shift
+
+    if ! screen -list | grep $SCREEN_NAME >/dev/null ; then
+        echo "Screen $SCREEN_NAME not found." >&2
+        return 124
+        # Create screen if it doesn't exist
+        #screen -dmS $SCREEN_NAME
+    fi
+
+    # Create I/O pipes
+    local DIR=$( mktemp -d )
+    mkfifo $DIR/stdin $DIR/stdout $DIR/stderr
+    echo 123 > $DIR/status
+    trap 'rm -f $DIR/{stdin,stdout,stderr,status}; rmdir $DIR' RETURN
+
+    # Forward ^C to screen
+    trap "screen -S $SCREEN_NAME -p0 -X stuff $'\003'" INT
+
+    # Print output and kill stdin when both pipes are closed
+    {
+        cat $DIR/stderr >&2 &
+        cat $DIR/stdout &
+        wait
+        [[ -e $DIR/stdin ]] && fuser -s -PIPE -k -w $DIR/stdin
+    } &
+    READER_PID=$!
+
+    # Close all the pipes if the command fails to start (e.g. syntax error)
+    {
+        # Kill the sleep when this subshell is killed. Ugh.. bash.
+        trap 'kill $(jobs -p)' EXIT
+
+        # Try to write nothing to stdin. This will block until something reads.
+        echo -n > $DIR/stdin &
+        TEST_PID=$!
+        sleep 2.0
+
+        # If the write failed and we're not killed, it probably didn't start
+        if [[ -e $DIR/stdin ]] && kill $TEST_PID 2>/dev/null; then
+            echo 'xscreen timeout' >&2
+            wait $TEST_PID 2>/dev/null
+
+            # Send ^C to clear any half-written command (e.g. no closing braces)
+            screen -S $SCREEN_NAME -p0 -X stuff $'\003'
+
+            # Write nothing to output, triggers SIGPIPE
+            echo -n 1> $DIR/stdout 2> $DIR/stderr
+
+            # Stop stdin by creating a fake reader and sending SIGPIPE
+            cat $DIR/stdin >/dev/null &
+            fuser -s -PIPE -k -w $DIR/stdin
+        fi
+    } &
+    CHECKER_PID=$!
+
+    # Start the command (Clear line ^A^K, enter command with redirects, run with ^O)
+    screen -S $SCREEN_NAME -p0 -X stuff "$(echo -ne '\001\013') { $* ; echo \$? > $DIR/status ; } <$DIR/stdin 1> >(tee $DIR/stdout) 2> >(tee $DIR/stderr >&2)$(echo -ne '\015')"
+
+    # Forward stdin
+    cat > $DIR/stdin
+    kill $CHECKER_PID 2>/dev/null && wait $CHECKER_PID 2>/dev/null
+
+    # Just in case stdin is closed early, wait for output to finish
+    wait $READER_PID 2>/dev/null
+
+    trap - INT
+
+    return $(cat $DIR/status)
+}
+
+if [[ -n $SERVER ]]; then
+    ssh $SERVER $SERVERPORT "$(typeset -f xscreen); xscreen $@"
+    RET=$?
+    if [[ $RET == 124 ]]; then
+        echo "To start screen: ssh $SERVER $SERVERPORT \"screen -dmS $1\"" >&2
+    fi
+    exit $RET
+else
+    xscreen "$1" "${@:2}"
+fi
