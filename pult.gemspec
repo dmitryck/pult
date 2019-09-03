@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["dmitryck"]
   spec.email         = ["dmitryck@gmail.com"]
 
-  spec.summary       = %q{ Pult for your apps or tasks }
+  spec.summary       = %q{ Pult for your apps or tasks (UNDER CONSTRUCTION) }
   spec.homepage      = "https://github.com/dmitryck/pult"
   spec.license       = "MIT"
 
