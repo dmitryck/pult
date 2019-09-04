@@ -1,4 +1,6 @@
 module Pult
+  class Cli; end
+
   class Executor
     class Job < ActiveJob::Base; end
     module Enver; end

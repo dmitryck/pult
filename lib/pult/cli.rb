@@ -1,4 +1,4 @@
-class Pult::CliRunner
+class Pult::Cli
 
   def self.start
 
