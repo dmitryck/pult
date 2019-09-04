@@ -50,7 +50,7 @@ class Pult::Executor
   def execute_here!
     params = [ @params, @command, chdir: @dir ]
 
-    with_env do
+    with_env :default do
       Open3.popen3( *params ) do |stdin, stdout, stderr, thr|
         @runner = {
           stdout: stdout.read,
