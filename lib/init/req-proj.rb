@@ -1,5 +1,7 @@
 require_relative '../pult/version'
 require_relative '../pult/cli'
+require_relative '../pult/api'
+require_relative '../pult/api/helper'
 require_relative '../pult/executor'
 require_relative '../pult/executor/enver'
 require_relative '../pult/executor/screener'
