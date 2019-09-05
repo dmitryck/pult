@@ -5,11 +5,12 @@ class Pult::Api
 
   Runner = Pult::Panel::Injector::Runner
 
-  # hack for line 22
-  @@self = self
-  
   def self.panel
     @@panel
+  end
+
+  def self.server! *args
+    Server.run! *args, api: self
   end
 
   def self.init! panel
@@ -17,8 +18,12 @@ class Pult::Api
 
     include Helper
 
+    # hack
+    @@self = self
+
     for app in @@panel._apps
       resource app do
+        # here
         @@self.draw! app
       end
     end

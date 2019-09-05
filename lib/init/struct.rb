@@ -2,6 +2,7 @@ module Pult
   class Cli; end
 
   class Api < Grape::API
+    module Server; end
     module Helper; end
   end
 
