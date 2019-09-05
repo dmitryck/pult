@@ -1,39 +1,42 @@
 module Pult::Api::Helper
 
-  UI = {
-    red:    ->(s){'<span style="color: red;">'+ s +'</span>'},
-    icon: {
-      job: '<b>&#8227; RUN JOB</b>',
-      run: '<b>&#8227; RUN</b>',
-      sep: ' | ',
-    },
-    title: {
-      get:  ->{"#{@@injection}#{@@action_title}"},
-      post: ->{"#{@@injection}#{@@action_title} #{@@icon}"},
-    },
-    detail: {
-      get:  ->{"#{@@injection}#{@@action_title}<br>#{@@command}"},
-      post: ->{"#{@@injection}#{@@action_title}<br>#{UI[:red].(@@command)}"}
-    }
-  }
-
   def self.included base
     base.extend ClassMethods
 
     base.helpers do
+      def panel
+        self.class.panel
+      end
+
       def action route
         /^\/(?<path>.+)$/ =~ route.pattern.origin
-        $panel._apply_path!(path, params)
+        panel._apply_path!(path, params)
       end
 
       def action! route
         /^\/(?<path>.+)$/ =~ route.pattern.origin
-        $panel._apply_path!("#{path}!", params)
+        panel._apply_path!("#{path}!", params)
       end
     end
   end
 
   module ClassMethods
+    UI = {
+      red: ->(s){'<span style="color: red;">'+ s +'</span>'},
+      icon: {
+        job: '<b>&#8227; RUN JOB</b>',
+        run: '<b>&#8227; RUN</b>',
+        sep: ' | ',
+      },
+      title: {
+        get:  ->{"#{@@injection}#{@@action_title}"},
+        post: ->{"#{@@injection}#{@@action_title} #{@@icon}"},
+      },
+      detail: {
+        get:  ->{"#{@@injection}#{@@action_title}<br>#{@@command}"},
+        post: ->{"#{@@injection}#{@@action_title}<br>#{UI[:red].(@@command)}"}
+      }
+    }
 
     def info flat_app, action, injection, job, type:
       @@action = action
