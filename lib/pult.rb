@@ -2,5 +2,8 @@ require_relative 'init/boot'
 
 module Pult
   class Error < StandardError; end
-  # Your code goes here...
+
+  def self.new *args
+    Panel.new *args
+  end
 end
