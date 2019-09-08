@@ -2,9 +2,9 @@ require_relative '../pult/version'
 
 require_relative '../pult/cli'
 
+require_relative '../pult/api'
 require_relative '../pult/api/drawer/helper'
 require_relative '../pult/api/drawer'
-require_relative '../pult/api'
 require_relative '../pult/api/server'
 
 require_relative '../pult/executor/enver'
