@@ -1,4 +1,6 @@
 
+RUBY_VERSION_REQ = '>= 2.3.0'
+
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "pult/version"
@@ -12,6 +14,8 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{ Pult for your apps or tasks (UNDER CONSTRUCTION) }
   spec.homepage      = "https://github.com/dmitryck/pult"
   spec.license       = "MIT"
+
+  spec.required_ruby_version = RUBY_VERSION_REQ
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
