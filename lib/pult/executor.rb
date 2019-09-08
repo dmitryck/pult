@@ -6,6 +6,8 @@ class Pult::Executor
     end
   end
 
+  include Enver
+
   attr_reader :runner
 
   NOEXEC = 'Нет запуска'
