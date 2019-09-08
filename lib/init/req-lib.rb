@@ -1,5 +1,6 @@
 require 'active_job'
 require 'grape'
+require 'grape-swagger'
 require 'open3'
 require 'rack'
 require 'yaml'

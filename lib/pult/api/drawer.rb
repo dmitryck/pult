@@ -12,6 +12,8 @@ class Pult::Api::Drawer
     for @@app in @@panel._apps
       resource @@app, & ACTIONS
     end
+
+    add_swagger_documentation
   end
 
   include Helper
