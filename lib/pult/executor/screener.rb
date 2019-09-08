@@ -1,5 +1,3 @@
-require 'open3'
-
 class Pult::Executor::Screener
 
   attr_reader :runner

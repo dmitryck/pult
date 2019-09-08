@@ -1,20 +1,26 @@
-module Pult::Api::Helper
+module Pult::Api::Drawer::Helper
 
   def self.included base
-    base.extend ClassMethods
+    @@base = base
+
+    Grape::API::Instance.extend ClassMethods
 
     base.helpers do
+      def path
+        route.pattern.origin
+      end
+
       def panel
-        self.class.panel
+        @@base.class_variable_get :@@panel
       end
 
       def action route
-        /^\/(?<path>.+)$/ =~ route.pattern.origin
+        /^\/(?<path>.+)$/ =~ path.sub(/^\/#{@@base::PREFIX}/, '')
         panel._apply_path!(path, params)
       end
 
       def action! route
-        /^\/(?<path>.+)$/ =~ route.pattern.origin
+        /^\/(?<path>.+)$/ =~ path.sub(/^\/#{@@base::PREFIX}/, '')
         panel._apply_path!("#{path}!", params)
       end
     end

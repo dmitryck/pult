@@ -1,23 +1,27 @@
 module Pult
+  class Error < StandardError; end
+
   class Cli; end
 
-  class Api < Grape::API
+  module Api 
+    class Drawer < Grape::API
+      module Helper; end
+    end
     module Server; end
-    module Helper; end
   end
 
   class Executor
-    class Job < ActiveJob::Base; end
     module Enver; end
+    class Job < ActiveJob::Base; end
     class  Screener; end
     class  Terminator; end
   end
 
   class Panel < Hash
+    module DotAccessible; end
     module Executor
       class Job < ActiveJob::Base; end
     end
-    module DotAccessible; end
     module Injector
       module App; end
       module Panel; end

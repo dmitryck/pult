@@ -1,6 +1,5 @@
 module Pult::Panel::Executor
 
-  # ActiveJob::Base
   class Job
     def perform hash_id, action, *args
       hash = ObjectSpace._id2ref hash_id

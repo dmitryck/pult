@@ -1,13 +1,10 @@
 class Pult::Executor
 
-  # ActiveJob::Base
   class Job
     def perform *args
       Pult::Executor.run! *args
     end
   end
-
-  include Enver
 
   attr_reader :runner
 
