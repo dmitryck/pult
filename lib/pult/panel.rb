@@ -1,3 +1,5 @@
+require 'byebug'
+
 class Pult::Panel
 
   include DotAccessible
@@ -91,8 +93,18 @@ class Pult::Panel
     Dir[scan].each do |path|
       config_file = YAML.load_file(path)
 
+      dir! config_file, path
+
       merge! config_file
     end
+  end
+
+  def dir! hash, path
+    dir = Pathname.new(path).dirname.to_s.gsub(/\/config$/, '')
+
+    hash['config'] ||= {}
+
+    hash['config']['dir'] ||= dir
   end
 
   def app_hash! *args
