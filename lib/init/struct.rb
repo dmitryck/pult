@@ -4,9 +4,7 @@ module Pult
   class Cli; end
 
   module Api 
-    class Drawer < Grape::API
-      module Helper; end
-    end
+    class Drawer < Grape::API; end
     module Server; end
   end
 
