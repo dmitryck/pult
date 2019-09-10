@@ -2,7 +2,7 @@ class Pult::Panel
 
   include DotAccessible
 
-  CONFIG_ROOT  = ENV['PULT_CONFIG_ROOT'] || nil
+  CONFIG_ROOT  = ENV['PULT_CONFIG_ROOT'] || Dir.pwd
   CONFIG_FILE  = ENV['PULT_CONFIG_FILE'] || 'pult.yml'
 
   SYS_KEYS = %w{ config }
