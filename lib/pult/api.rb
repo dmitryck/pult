@@ -1,12 +1,14 @@
 module Pult::Api
 
-  def self.init! panel
-    Drawer.draw! panel
+  API = Drawer
 
-    Drawer.add_swagger_documentation
+  def self.init! panel
+    API.draw! panel
+
+    API.add_swagger_documentation
   end
 
   def self.server! *args
-    Server.run! *args, api: Drawer
+    Server.run! *args, api: API
   end
 end
