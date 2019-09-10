@@ -1,9 +1,9 @@
 # Done
 
-- Ruby/Http interface to yml tasks (only development mode, just playground)
+- Ruby/Http interface to yml tasks. Playground to 0.0.7
 
 # Fixes and updates
 
 - Fix and refactoring API
-- Add Swagger doc rendering
+- Add JSON Swagger documentation for API
 - Ruby version req
