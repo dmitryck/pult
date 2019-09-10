@@ -6,8 +6,6 @@ class Pult::Api::Drawer
 
   prefix PREFIX
 
-  cattr_accessor :panel
-
   UI = {
     red: ->(s){'<span style="color: red;">'+ s +'</span>'},
 
