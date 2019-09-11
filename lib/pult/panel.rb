@@ -1,5 +1,3 @@
-require 'byebug'
-
 class Pult::Panel
 
   include DotAccessible
