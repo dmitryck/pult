@@ -100,11 +100,13 @@ class Pult::Panel
   end
 
   def dir! hash, path
+    app = hash.keys.first
+
+    config = (hash[app]['config'] ||= {})
+
     dir = Pathname.new(path).dirname.to_s.gsub(/\/config$/, '')
 
-    hash['config'] ||= {}
-
-    hash['config']['dir'] ||= dir
+    config['dir'] ||= dir
   end
 
   def app_hash! *args
