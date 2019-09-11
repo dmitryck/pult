@@ -1,5 +1,5 @@
 # Pult
 
-Pult is UNDER CONSTRUCTION
+**Under construction**! This is **Dev** version (0.0.*x*)
 
-Comming soon...
+Development progress can be reached at [CHANGELOG](./CHANGELOG.md)
