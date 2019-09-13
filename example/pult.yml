@@ -2,6 +2,8 @@
 # rails, for example
 #
 appname:
+  test:       'pause 20 && echo 123'
+
   # allow combine actions of the same level
   up:         [pull, prepare, start]
   restart:    [stop, start]
