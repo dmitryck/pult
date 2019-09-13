@@ -6,6 +6,12 @@ class Pult::Api::Drawer
 
   prefix PREFIX
 
+  ENV_VAR = /[A-Z][A-Z0-9]*/
+
+  Runner = Pult::Panel::Injector::Runner
+
+  @@self = self
+
   UI = {
     red: ->(s){'<span style="color: red;">'+ s +'</span>'},
 
@@ -41,10 +47,6 @@ class Pult::Api::Drawer
       @@panel._apply_path!("#{path}!", params)
     end
   end
-
-  Runner = Pult::Panel::Injector::Runner
-
-  @@self = self
 
   def self.draw! panel
     @@panel = panel
@@ -101,7 +103,7 @@ class Pult::Api::Drawer
     params do
       optional :screen, type: String
 
-      @@command.scan(/(?<=\$)[^\s()]+/).each do |param|
+      @@command.scan(/(?<=\$)#{ENV_VAR}/).each do |param|
         description = { type: String }
 
         if ! (default = `echo -n $#{param}`).blank?
