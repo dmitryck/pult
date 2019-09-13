@@ -1,0 +1,16 @@
+appname:
+  # allow combine actions of the same level
+  up:         [pull, prepare, start]
+  restart:    [stop, start]
+
+  pull:       git pull
+
+  # rails, for example
+  start:      rails s -e production
+  stop:       f=tmp/pids/server.pid; if [ -f "$f" ]; then rm $f; fi
+  prepare:    rails assets:precompile
+
+  # allow grouping actions in sublevels
+  log:
+    rm_dev:   f=log/production.log; if [ -f "$f" ]; then >$f; fi
+    rm_prod:  f=log/development.log; if [ -f "$f" ]; then >$f; fi
