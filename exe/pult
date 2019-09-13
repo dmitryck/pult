@@ -9,8 +9,6 @@ COMMANDS = {
     Pult::Api.init! pult
 
     Thread.new { Pult::Api.server! }
-
-    exit 0
   }
 }
 
