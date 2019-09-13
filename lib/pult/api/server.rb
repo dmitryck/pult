@@ -1,6 +1,6 @@
 module Pult::Api::Server
 
-  PORT = ENV['PULT_API_PORT']&.to_i || 9292
+  PORT = ENV['PULT_API_PORT']&.to_i || 7070
 
   # temp fix curl -d ''
   METHS = WEBrick::HTTPRequest::BODY_CONTAINABLE_METHODS
