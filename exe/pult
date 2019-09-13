@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+COMMANDS = {
+  ['server', 's'] => ->{
+    require_relative '../lib/pult'
+
+    pult = Pult.new
+
+    Pult::Api.init! pult
+
+    Thread.new { Pult::Api.server! }
+
+    exit 0
+  }
+}
+
+COMMANDS.keys.each do |arg|
+  if arg.include? ARGV[0]
+    COMMANDS[arg].call
+  end
+end
