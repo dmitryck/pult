@@ -9,9 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Dev version
 
 ### Updates
-- README Installation, Usage, TODO
-- Fix and new pattern for env vars in commands (UPCASED and downcased)
+- Fix and new pattern for env vars yml (UPCASED and downcased)
 - New default port for API server (7070)
+- Add README Installation, Usage, TODO
 
 ## [0.0.13] - 2019-13-09
 ### Status
