@@ -20,5 +20,5 @@ appname:
 
   # allow grouping actions in sublevels
   log:
-    clean:    >log/production.log
+    clean:    '>log/production.log'
     view:     cat log/production.log
