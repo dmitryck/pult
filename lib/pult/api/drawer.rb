@@ -4,7 +4,8 @@ class Pult::Api::Drawer
 
   format :json
 
-  prefix PREFIX
+  # TODO, temp turn off
+  # prefix PREFIX
 
   ENV_VAR = /[A-Z][A-Z0-9]*/
 
