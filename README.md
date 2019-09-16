@@ -77,7 +77,7 @@ List of this new Pult API actions, that do some things:
 - `<action>_err` to get STDERR of action
 - `<action>_suc` to get success status of action (true or false)
 
-### 1.2. Start Pult HTTP server and manage your app via API
+### 1.3. Start Pult HTTP server and manage your app via API
 
 Main principle of interact with API is:
 - `GET` method is used for **view** something
