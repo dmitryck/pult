@@ -75,7 +75,7 @@ List of this new Pult API actions, that do some things:
 - `<action>_job` to run action in a backround
 - `<action>_out` to get STDOUT of action
 - `<action>_err` to get STDERR of action
-- `<action>_suc` to get STDERR of action
+- `<action>_suc` to get success status of action (true or false)
 
 ### 1.2. Start Pult HTTP server and manage your app via API
 
