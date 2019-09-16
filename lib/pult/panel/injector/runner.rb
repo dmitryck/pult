@@ -5,7 +5,7 @@ module Pult::Panel::Injector::Runner
   end
 
   def self.read_injections
-    %w{ _out _in _err _success _info _active _pid }
+    %w{ _out _in _err _suc _inf _act _pid }
   end
 
   def self.run_injections
@@ -36,19 +36,19 @@ module Pult::Panel::Injector::Runner
         #{action}_runner.stderr
       end
 
-      def #{action}_info
+      def #{action}_inf
         #{action}_runner.info
       end
 
-      def #{action}_success
-        #{action}_info.success?
+      def #{action}_suc
+        #{action}_inf.success?
       end
 
       def #{action}_pid
-        #{action}_info.pid
+        #{action}_inf.pid
       end
 
-      def #{action}_active
+      def #{action}_act
 
       end
 
