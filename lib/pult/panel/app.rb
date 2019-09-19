@@ -3,7 +3,7 @@ module Pult::Panel::App
   def self.to_app! hash, panel, app
     multi_action! hash
 
-    hash.class_eval { include Pult::Panel::DotAccessible }
+    hash.class_eval { include DotAccessible }
 
     Injector.inject! hash, panel, app
 
