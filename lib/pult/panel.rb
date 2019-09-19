@@ -45,6 +45,7 @@ class Pult::Panel
 
     for app_name in keys
       app = self[app_name]
+
       @_apps << app_name
 
       App.to_app! app, self, app_name
