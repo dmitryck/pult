@@ -39,7 +39,7 @@ Manage many applications is the feature of Pult. But to understand the concept a
 
 ### 1.1. Configure app actions via pult.yml
 
-Put `pult.yml` anywere into your app folder, some kind of `<app>/pult.yml` or `<app>/config/pult.yml`, and create any actions you need for manage your app:
+Put `.pult.yml` into root of your app folder `<app>/.pult.yml` and create any actions you need for manage app:
 ```yaml
 # actions is a simple linux shell commands
 
