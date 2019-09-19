@@ -23,7 +23,7 @@ class Pult::Panel
   end
 
   def self.app_hash! hash, panel, app
-    array_node! hash
+    multi_action! hash
 
     hash.class_eval { include DotAccessible }
 
@@ -36,20 +36,27 @@ class Pult::Panel
     hash
   end
 
-  def self.array_node! hash
+  def self.multi_action! hash
     hash.keys.each do |key|
       value = hash[key]
 
       case value.class.name
-      when "Hash" then array_node! value
-      when "Array"
-        # clone hash
-        # complex = {}
-        # value.each{ |elm| complex[elm] = hash[elm] }
-        # hash[key] = complex
 
-        # combine commands
-        hash[key] = '$(' + value.join(') && $(') + ')'
+      when "Hash"
+        multi_action! value
+
+      when "Array"
+        case Pult::MULTIACT
+
+        when 'clone'
+          clone hash
+          complex = {}
+          value.each{ |elm| complex[elm] = hash[elm] }
+          hash[key] = complex
+
+        when 'join'
+          hash[key] = '$(' + value.join(') && $(') + ')'
+        end
       end
     end
   end
@@ -106,7 +113,7 @@ class Pult::Panel
     self.class.app_hash! *args
   end
 
-  def array_node! *args
-    self.class.array_node *args
+  def multi_action! *args
+    self.class.multi_action *args
   end
 end
