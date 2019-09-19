@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.16] - 2019-19-09
+### Status
+- Dev version
+
+### Updates
+- Pattern `.pult.yml` in root of project
+- Refactoring `Panel` obj (separated `App`, `Runner` modules with `Injector` and `DotAccessible`)
+- Simplify `PULT_<name>` envs;
+- Add `PULT_MULTIACT` env (types of multi action in panel `join` or `clone`)
+
 ## [0.0.15] - 2019-15-09
 ### Status
 - Dev version
