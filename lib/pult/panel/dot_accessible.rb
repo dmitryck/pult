@@ -1,6 +1,6 @@
 module Pult::Panel::DotAccessible
 
   def method_missing meth, *args
-    self[meth]
+    self[meth.to_s]
   end
 end
