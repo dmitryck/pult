@@ -1,6 +1,4 @@
-require_relative '../pult/version'
-
-require_relative '../pult/cli'
+require_relative 'const'
 
 require_relative '../pult/api'
 require_relative '../pult/api/drawer'

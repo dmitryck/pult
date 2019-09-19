@@ -1,6 +1,6 @@
-# actions is a simple linux shell commands
-
+---
 appname:
+  # actions is a simple linux shell commands
   test:       'sleep 20 && echo 123'
 
   # allow combine actions of the same level

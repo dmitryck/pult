@@ -1,11 +1,6 @@
 class Pult::Api::Drawer
 
-  PREFIX = ENV['PULT_API_PREFIX'] || 'api'
-
   format :json
-
-  # TODO, temp turn off
-  # prefix PREFIX
 
   ENV_VAR = /[A-Z][A-Z0-9]*/
 
@@ -39,12 +34,12 @@ class Pult::Api::Drawer
     end
 
     def action_get
-      /^\/(?<path>.+)$/ =~ path.sub(/^\/#{PREFIX}/, '')
+      /^\/(?<path>.+)$/ =~ path
       @@panel._apply_path!(path, params)
     end
 
     def action_post
-      /^\/(?<path>.+)$/ =~ path.sub(/^\/#{PREFIX}/, '')
+      /^\/(?<path>.+)$/ =~ path
       @@panel._apply_path!("#{path}!", params)
     end
   end

@@ -2,24 +2,20 @@ class Pult::Panel
 
   include DotAccessible
 
-  CONFIG_ROOT  = ENV['PULT_CONFIG_ROOT'] || Dir.pwd
-  CONFIG_FILE  = ENV['PULT_CONFIG_FILE'] || 'pult.yml'
-
   SYS_KEYS = %w{ config }
 
-  attr_accessor :_config_root
-  attr_accessor :_config_file
+  attr_accessor :_root
+  attr_accessor :_file
 
   def initialize auto: true
-    @_config_root  = CONFIG_ROOT
-    @_config_file  = CONFIG_FILE
+    @_root  = Pult::ROOT
+    @_file  = Pult::FILE
 
     init! if auto && allow_init?
   end
 
   def init!
     if allow_init?
-
       panel_hash!
     else
       raise StandardError, 'Init is not allowed!'
@@ -61,7 +57,7 @@ class Pult::Panel
   private
 
   def allow_init?
-    true_abs_path?(@_config_file) || (!!@_config_root && !!@_config_file)
+    true_abs_path?(@_file) || (!!@_root && !!@_file)
   end
 
   def true_abs_path? path
@@ -86,23 +82,22 @@ class Pult::Panel
   end
 
   def compile_hash_from_configs!
-    scan = @_config_root + '/**/' + @_config_file
+    scan = @_root + '/**/' + @_file
 
     Dir[scan].each do |path|
-      config_file = YAML.load_file(path)
+      pult_file = YAML.load_file(path)
 
-      dir! config_file, path
+      dir! pult_file, path
 
-      merge! config_file
+      merge! pult_file
     end
   end
 
   def dir! hash, path
     app = hash.keys.first
+    dir = Pathname.new(path).dirname.to_s
 
     config = (hash[app]['config'] ||= {})
-
-    dir = Pathname.new(path).dirname.to_s.gsub(/\/config$/, '')
 
     config['dir'] ||= dir
   end
