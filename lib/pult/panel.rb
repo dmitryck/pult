@@ -1,7 +1,5 @@
 class Pult::Panel
 
-  include DotAccessible
-
   SYS_KEYS = %w{ config }
 
   attr_accessor :_root
@@ -16,48 +14,9 @@ class Pult::Panel
 
   def init!
     if allow_init?
-      panel_hash!
+      to_panel!
     else
       raise StandardError, 'Init is not allowed!'
-    end
-  end
-
-  def self.app_hash! hash, panel, app
-    multi_action! hash
-
-    hash.class_eval { include DotAccessible }
-
-    Injector::App.inject! hash, panel, app
-
-    hash.values.each do |target|
-      app_hash!(target, panel, app) if target.is_a?(Hash)
-    end
-
-    hash
-  end
-
-  def self.multi_action! hash
-    hash.keys.each do |key|
-      value = hash[key]
-
-      case value.class.name
-
-      when "Hash"
-        multi_action! value
-
-      when "Array"
-        case Pult::MULTIACT
-
-        when 'clone'
-          clone hash
-          complex = {}
-          value.each{ |elm| complex[elm] = hash[elm] }
-          hash[key] = complex
-
-        when 'join'
-          hash[key] = '$(' + value.join(') && $(') + ')'
-        end
-      end
     end
   end
 
@@ -71,32 +30,36 @@ class Pult::Panel
     path[0] == '/' && File.exists(path)
   end
 
-  def panel_hash!
-    compile_hash_from_configs!
+  def to_panel!
+    compile_from_pult_files!
 
+    class_eval { include DotAccessible }
+
+    Injector.inject! self
+
+    make_apps!
+  end
+
+  def make_apps!
     @_apps = []
 
     for app_name in keys
       app = self[app_name]
       @_apps << app_name
 
-      app_hash! app, self, app_name
+      App.to_app! app, self, app_name
     end
-
-    class_eval { include DotAccessible }
-
-    Injector::Panel.inject! self
   end
 
-  def compile_hash_from_configs!
+  def compile_from_pult_files!
     scan = @_root + '/**/' + @_file
 
-    Dir[scan].each do |path|
-      pult_file = YAML.load_file(path)
+    Dir[scan].each do |pult_file|
+      pult_hash = YAML.load_file(pult_file)
 
-      dir! pult_file, path
+      dir! pult_hash, pult_file
 
-      merge! pult_file
+      merge! pult_hash
     end
   end
 
@@ -107,13 +70,5 @@ class Pult::Panel
     config = (hash[app]['config'] ||= {})
 
     config['dir'] ||= dir
-  end
-
-  def app_hash! *args
-    self.class.app_hash! *args
-  end
-
-  def multi_action! *args
-    self.class.multi_action *args
   end
 end

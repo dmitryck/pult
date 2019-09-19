@@ -1,4 +1,4 @@
-module Pult::Panel::Injector::App
+module Pult::Panel::App::Injector
 
   SYS_KEYS = Pult::Panel::SYS_KEYS
 
@@ -25,7 +25,7 @@ module Pult::Panel::Injector::App
             : a.merge("#{prefix}#{k}" => v)
         end
 
-        Pult::Panel.app_hash! hash, _panel, _app
+        Pult::Panel::App.to_app! hash, _panel, _app
       end
 
       def _config

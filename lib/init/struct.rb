@@ -16,14 +16,18 @@ module Pult
   end
 
   class Panel < Hash
+    module App
+      module DotAccessible; end
+      module Injector; end
+    end
+    module Runner
+      module DotAccessible; end
+      module Injector; end
+    end
     module DotAccessible; end
+    module Injector; end
     module Executor
       class Job < ActiveJob::Base; end
-    end
-    module Injector
-      module App; end
-      module Panel; end
-      module Runner; end
     end
   end
 end

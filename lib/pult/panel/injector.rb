@@ -1,6 +1,6 @@
-module Pult::Panel::Injector::Panel
+module Pult::Panel::Injector
 
-  Runner = Pult::Panel::Injector::Runner
+  RunnerInjector = Pult::Panel::Runner::Injector
 
   def self.inject! panel
     panel.class_eval do
@@ -44,7 +44,7 @@ module Pult::Panel::Injector::Panel
       def _apply_path! path, params=nil
         params = params&.any? ? params : nil
 
-        for postfix in _exec_flags + Runner.injections
+        for postfix in _exec_flags + RunnerInjector.injections
           regexp = Regexp.new("\/([^\/]+" + Regexp.escape(postfix) + ")$")
 
           path.gsub!(regexp, '')

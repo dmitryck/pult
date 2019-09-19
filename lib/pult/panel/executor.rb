@@ -12,9 +12,9 @@ module Pult::Panel::Executor
 
     runner = Pult::Executor.run! command, hash._config.dir, *args
 
-    runner.class_eval { include Pult::Panel::DotAccessible::Basic }
+    runner.class_eval { include Pult::Panel::Runner::DotAccessible }
 
-    Pult::Panel::Injector::Runner.inject! hash, action, runner
+    Pult::Panel::Runner::Injector.inject! hash, action, runner
 
     runner
   end

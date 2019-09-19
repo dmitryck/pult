@@ -1,4 +1,4 @@
-module Pult::Panel::Injector::Runner
+module Pult::Panel::Runner::Injector
 
   def self.injections
     read_injections + run_injections

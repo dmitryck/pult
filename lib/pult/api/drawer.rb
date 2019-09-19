@@ -4,7 +4,7 @@ class Pult::Api::Drawer
 
   ENV_VAR = /[A-Z][A-Z0-9]*/
 
-  Runner = Pult::Panel::Injector::Runner
+  RunnerInjector = Pult::Panel::Runner::Injector
 
   @@self = self
 
@@ -56,12 +56,12 @@ class Pult::Api::Drawer
         for action in flat_app._actions.sort.reverse
           action_url = action.gsub '.', '/'
 
-          for injection in Runner.read_injections.sort
+          for injection in RunnerInjector.read_injections.sort
             @@self.info_get flat_app, action, injection
             get("#{action_url}_#{injection}") { action_get }
           end
 
-          for injection in Runner.run_injections.sort
+          for injection in RunnerInjector.run_injections.sort
             @@self.info_post flat_app, action, injection
             post("#{action_url}_#{injection}") { action_post }
           end
