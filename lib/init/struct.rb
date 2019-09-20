@@ -16,6 +16,9 @@ module Pult
   end
 
   class Panel < Hash
+    module Provider
+      module Pult; end
+    end
     module App
       module DotAccessible; end
       module Injector; end

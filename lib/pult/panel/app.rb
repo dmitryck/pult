@@ -1,22 +1,44 @@
 module Pult::Panel::App
 
-  def self.to_app! hash, panel, app
-    multi_action! hash
+  def self.config_dir! app_hash, path
+    app_name = app_hash.keys.first
 
-    hash.class_eval { include DotAccessible }
+    dir = Pathname.new(path).dirname.to_s
 
-    Injector.inject! hash, panel, app
+    config = (app_hash[app_name]['config'] ||= {})
 
-    hash.values.each do |target|
-      to_app!(target, panel, app) if target.is_a?(Hash)
-    end
-
-    hash
+    config['dir'] ||= dir
   end
 
-  def self.multi_action! hash
-    hash.keys.each do |key|
-      value = hash[key]
+  def self.make_apps! panel
+    panel.instance_variable_set(:@_apps, [])
+
+    for app_name in panel.keys
+      hash = panel[app_name]
+
+      panel._apps << app_name
+
+      to_app! hash, panel, app_name
+    end
+  end
+
+  def self.to_app! app_hash, panel, app_name
+    multi_action! app_hash
+
+    app_hash.class_eval { include DotAccessible }
+
+    Injector.inject! app_hash, panel, app_name
+
+    app_hash.values.each do |target|
+      to_app!(target, panel, app_name) if target.is_a?(Hash)
+    end
+
+    app_hash
+  end
+
+  def self.multi_action! app_hash
+    app_hash.keys.each do |key|
+      value = app_hash[key]
 
       case value.class.name
 
@@ -27,13 +49,13 @@ module Pult::Panel::App
         case Pult::MULTIACT
 
         when 'clone'
-          clone hash
+          clone app_hash
           complex = {}
-          value.each{ |elm| complex[elm] = hash[elm] }
-          hash[key] = complex
+          value.each{ |elm| complex[elm] = app_hash[elm] }
+          app_hash[key] = complex
 
         when 'join'
-          hash[key] = '$(' + value.join(') && $(') + ')'
+          app_hash[key] = '$(' + value.join(') && $(') + ')'
         end
       end
     end
