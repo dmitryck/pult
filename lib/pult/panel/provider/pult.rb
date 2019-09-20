@@ -7,11 +7,15 @@ module Pult::Panel::Provider::Pult
 
     Dir[pult_files].each do |pult_file|
 
-      pult_hash = YAML.load_file(pult_file)
+      hash = pult_hash pult_file
 
-      Pult::Panel::App.config_dir! pult_hash, pult_file
+      Pult::Panel::App.config_dir! hash, pult_file
 
-      panel.merge! pult_hash
+      panel.merge! hash
     end
+  end
+
+  def self.pult_hash file
+    YAML.load_file(file)
   end
 end
