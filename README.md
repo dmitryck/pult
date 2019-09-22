@@ -6,6 +6,10 @@ Development progress can be reached at [CHANGELOG](./CHANGELOG.md)
 
 Ruby *>= 2.3.0* require
 
+```diff
+- **TODO**: Refactor README (new concept, new feature)
+```
+
 # What is Pult?
 
 Universal API service for manage your appications and system tasks via Ruby or HTTP.
