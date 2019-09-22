@@ -23,6 +23,7 @@ class Pult::Panel
     class_eval { include DotAccessible }
 
     Provider::Pult.mixin! self
+    Provider::Rake.mixin! self
 
     Injector.inject! self
 

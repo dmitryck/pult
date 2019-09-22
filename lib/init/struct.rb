@@ -18,6 +18,7 @@ module Pult
   class Panel < Hash
     module Provider
       module Pult; end
+      module Rake; end
     end
     module App
       module DotAccessible; end

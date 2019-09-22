@@ -11,6 +11,7 @@ require_relative '../pult/executor/terminator'
 
 require_relative '../pult/panel/provider'
 require_relative '../pult/panel/provider/pult'
+require_relative '../pult/panel/provider/rake'
 require_relative '../pult/panel/dot_accessible'
 require_relative '../pult/panel/injector'
 require_relative '../pult/panel'
