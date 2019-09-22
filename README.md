@@ -1,14 +1,14 @@
 # Pult
 
-**UNDER CUNSTRUCTION!** This is **Dev** version (0.0.*x*)
+```diff
+- UNDER CUNSTRUCTION! This is Dev version (0.0.x) -
+
+! TODO: Update README (new concept and features) !
+```
 
 Development progress can be reached at [CHANGELOG](./CHANGELOG.md)
 
 Ruby *>= 2.3.0* require
-
-```diff
-- **TODO**: Refactor README (new concept, new feature)
-```
 
 # What is Pult?
 
