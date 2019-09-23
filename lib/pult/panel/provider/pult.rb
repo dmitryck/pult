@@ -16,6 +16,6 @@ module Pult::Panel::Provider::Pult
   end
 
   def self.pult_hash file
-    YAML.load_file(file)
+    File.exists?(file) ? YAML.load_file(file) : {}
   end
 end
