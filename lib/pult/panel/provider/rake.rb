@@ -11,8 +11,6 @@ module Pult::Panel::Provider::Rake
     Dir[rake_files].each do |rake_file|
       hash = pult_hash rake_file
 
-      Pult::Panel::App.config_dir! hash, rake_file
-
       # merge in app
       panel[app_name(rake_file)]&.merge! hash
     end
@@ -22,12 +20,12 @@ module Pult::Panel::Provider::Rake
     hash  = {}
     tasks = self.tasks(file)
 
-    for task in tasks
+    for task in tasks.sort.reverse
       count = task.count(':')
 
       n = -1
       task.split(':').reduce(hash) do |h, t|
-        (n += 1) && n == count ? h[t] = "#{COMMAND} #{task}" : h[t] = {}
+        (n += 1) && n == count ? h[t] = "#{COMMAND} #{task}" : h[t] ||= {}
       end
     end
 
