@@ -5,6 +5,7 @@ module Pult::Panel::App
 
     dir = Pathname.new(path).dirname.to_s
 
+    app_hash[app_name] = {} if ! app_hash[app_name]
     config = (app_hash[app_name]['config'] ||= {})
 
     config['dir'] ||= dir

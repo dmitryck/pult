@@ -9,12 +9,12 @@ module Pult::Panel::Provider::Rake
     rake_files = Pult::Panel::Provider.files(FILE, panel._root)
 
     Dir[rake_files].each do |rake_file|
-
       hash = pult_hash rake_file
 
       Pult::Panel::App.config_dir! hash, rake_file
 
-      panel.merge! hash
+      # merge in app
+      panel[app_name(rake_file)]&.merge! hash
     end
   end
 
@@ -45,5 +45,16 @@ module Pult::Panel::Provider::Rake
 
     # temp ignore params
     tasks.map{ |t| t.sub /\[.+/, '' }
+  end
+
+  # tmp; await for refactoring mixins in panel.rb
+  def self.app_name file
+    app_dir   = Pathname.new(file).dirname.to_s
+    pult_file = Pult::Panel::Provider::Pult::FILE
+
+    pult_hash = \
+      Pult::Panel::Provider::Pult.pult_hash("#{app_dir}/#{pult_file}")
+
+    pult_hash.keys&.first
   end
 end
