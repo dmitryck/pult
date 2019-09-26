@@ -1,58 +1,54 @@
 module Pult::Panel::Provider::Rake
 
   FILE    = 'Rakefile'
-  COMMAND = 'rake'
+  COMMAND = %w{rake rails}
 
   PATH    = Pult::RAKEPATH || 'r'
 
   def self.mixin! panel
-    rake_files = Pult::Panel::Provider.files(FILE, panel._root)
+    app_dirs = Pult::Panel::Provider.app_dirs(panel)
 
-    Dir[rake_files].each do |rake_file|
+    app_dirs.map{|a, d| [a, "#{d}/#{FILE}"] }.each do |app, rake_file|
       hash = pult_hash rake_file
 
-      # merge in app
-      panel[app_name(rake_file)]&.merge! hash
+      panel[app]&.merge! hash
     end
   end
 
   def self.pult_hash file
     hash  = {}
-    tasks = self.tasks(file)
 
-    for task in tasks.sort.reverse
-      count = task.count(':')
-
+    maker = lambda do |task, command, count|
       n = -1
       task.split(':').reduce(hash) do |h, t|
-        (n += 1) && n == count ? h[t] = "#{COMMAND} #{task}" : h[t] ||= {}
+        (n += 1) && n == count ? h[t] = "#{command} #{task}" : h[t] ||= {}
       end
+    end
+
+    for command in COMMAND
+      tasks = self.tasks command, file
+
+      for task in tasks.sort.reverse
+        count = task.count(':')
+        maker.(task, command, count)
+      end
+
+      break if hash.any?
     end
 
     { PATH => hash }
   end
 
-  def self.tasks file
+  def self.tasks command, file
     app_dir = Pathname.new(file).dirname.to_s
 
-    runner = Pult::Executor.run! "#{COMMAND} --tasks", app_dir
+    runner = Pult::Executor.run! "#{command} --tasks", app_dir
 
     tasks = runner[:stdout].split(/\n/).map do |s|
-      s.sub(/^#{COMMAND} (\S+).*/, '\1')
+      s.sub(/^#{command} (\S+).*/, '\1')
     end
 
     # temp ignore params
     tasks.map{ |t| t.sub /\[.+/, '' }
-  end
-
-  # tmp; await for refactoring mixins in panel.rb
-  def self.app_name file
-    app_dir   = Pathname.new(file).dirname.to_s
-    pult_file = Pult::Panel::Provider::Pult::FILE
-
-    pult_hash = \
-      Pult::Panel::Provider::Pult.pult_hash("#{app_dir}/#{pult_file}")
-
-    pult_hash.keys&.first
   end
 end
