@@ -18,9 +18,10 @@ module Pult::Panel::Provider::Rake
   def self.pult_hash file
     hash  = {}
 
-    maker = lambda do |task, command, count|
+    maker = lambda do |task, command|
       n = -1
       task.split(':').reduce(hash) do |h, t|
+        count = task.count(':')
         (n += 1) && n == count ? h[t] = "#{command} #{task}" : h[t] ||= {}
       end
     end
@@ -28,10 +29,7 @@ module Pult::Panel::Provider::Rake
     for command in COMMAND
       tasks = self.tasks command, file
 
-      for task in tasks.sort.reverse
-        count = task.count(':')
-        maker.(task, command, count)
-      end
+      tasks.sort.reverse.each{|task| maker.(task, command) }
 
       break if hash.any?
     end
