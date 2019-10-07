@@ -19,6 +19,7 @@ module Pult
     module Provider
       module Pult; end
       module Rake; end
+      module Service; end
     end
     module App
       module DotAccessible; end

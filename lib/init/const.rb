@@ -8,5 +8,6 @@ module Pult
 
   MULTIACT  = ENV['PULT_MULTIACT'] || 'join' # 'clone'
 
-  RAKEPATH  = ENV['PULT_RAKEPATH']
+  RAKEPATH      = ENV['PULT_RAKEPATH']
+  SERVICEPATH   = ENV['PULT_RAKEPATH']
 end

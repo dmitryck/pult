@@ -24,6 +24,7 @@ class Pult::Panel
 
     Provider::Pult.mixin! self
     Provider::Rake.mixin! self
+    Provider::Service.mixin! self
 
     Injector.inject! self
 
