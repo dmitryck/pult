@@ -43,7 +43,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "minitest", "~> 5.0"
   spec.add_development_dependency "activesupport", "~> 5.2"
   spec.add_development_dependency "activejob", "~> 5.2"
-  spec.add_development_dependency "rack", "~> 2.0"
+  spec.add_development_dependency "rack", "~> 3.0"
   spec.add_development_dependency "grape", "~> 1.2"
   spec.add_development_dependency "grape-swagger", "~> 0.33"
 end
