@@ -43,7 +43,7 @@ GEM
     mustermann (1.0.3)
     mustermann-grape (1.0.0)
       mustermann (~> 1.0.0)
-    rack (2.0.7)
+    rack (3.0.8)
     rack-accept (0.4.5)
       rack (>= 0.4)
     rake (10.5.0)
@@ -67,7 +67,7 @@ DEPENDENCIES
   grape-swagger (~> 0.33)
   minitest (~> 5.0)
   pult!
-  rack (~> 2.0)
+  rack (~> 3.0)
   rake (~> 10.0)
 
 BUNDLED WITH
